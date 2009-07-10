@@ -1,8 +1,3 @@
-
-# Equivalent to a header guard in C/C++
-# Used to prevent the class/module from being loaded more than once
-unless defined? Logging
-
 require File.expand_path(
     File.join(File.dirname(__FILE__), %w[logging utils]))
 
@@ -20,7 +15,6 @@ require? 'fastthread'
 #
 #
 module Logging
-
   # :stopdoc:
   VERSION = '1.1.4'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
@@ -83,7 +77,7 @@ module Logging
     # The format of the log messages can be changed using a few optional
     # parameters. The <tt>:pattern</tt> can be used to change the log
     # message format. The <tt>:date_pattern</tt> can be used to change how
-    # timestamps are formatted. 
+    # timestamps are formatted.
     #
     #    log = Logging.logger(STDOUT,
     #              :pattern => "[%d] %-5l : %m\n",
@@ -131,7 +125,7 @@ module Logging
           case dev
           when String
             ::Logging::Appenders::RollingFile.new(name, a_opts)
-          else 
+          else
             ::Logging::Appenders::IO.new(name, dev, a_opts)
           end
 
@@ -272,7 +266,7 @@ module Logging
       args.each do |lvl|
         lvl = levelify lvl
         unless levels.has_key?(lvl) or lvl == 'all' or lvl == 'off'
-          levels[lvl] = id 
+          levels[lvl] = id
           names[id] = lvl.upcase
           id += 1
         end
@@ -284,7 +278,7 @@ module Logging
 
       levels.keys
     end
-   
+
     # call-seq:
     #    Logging.format_as( obj_format )
     #
@@ -462,8 +456,6 @@ module Logging
   end
 end  # module Logging
 
-
-require Logging.libpath(%w[logging appender])
 require Logging.libpath(%w[logging layout])
 require Logging.libpath(%w[logging log_event])
 require Logging.libpath(%w[logging logger])
@@ -476,13 +468,12 @@ require Logging.libpath(%w[logging layouts])
 require Logging.libpath(%w[logging config configurator])
 require Logging.libpath(%w[logging config yaml_configurator])
 
-
-# This exit handler will close all the appenders that exist in the system.
-# This is needed for closing IO streams and connections to the syslog server
-# or e-mail servers, etc.
-#
-at_exit {Logging.shutdown}
-
+unless defined? Logging::EXIT
+  # This exit handler will close all the appenders that exist in the system.
+  # This is needed for closing IO streams and connections to the syslog server
+  # or e-mail servers, etc.
+  #
+  at_exit {Logging.shutdown}
+  Logging::EXIT = true
 end  # unless defined?
-
 # EOF
