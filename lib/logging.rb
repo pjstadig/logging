@@ -16,7 +16,7 @@ require? 'fastthread'
 #
 module Logging
   # :stopdoc:
-  VERSION = '1.1.4'
+  VERSION = '1.1.4.2'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   LEVELS = {}
@@ -456,6 +456,7 @@ module Logging
   end
 end  # module Logging
 
+require Logging.libpath(%w[logging appender])
 require Logging.libpath(%w[logging layout])
 require Logging.libpath(%w[logging log_event])
 require Logging.libpath(%w[logging logger])
